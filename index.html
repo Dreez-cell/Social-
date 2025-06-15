@@ -254,18 +254,18 @@
 <!-- Discussion groups tabs -->
 <div class="carousel-wrapper" aria-label="Discussion groups carousel" tabindex="0">
   <div class="group-tabs" role="tablist" aria-orientation="horizontal">
-    <button role="tab" onclick="loadDisqus('group-politics', this)"><i class="fas fa-landmark"></i> Politics</button>
-    <button role="tab" onclick="loadDisqus('group-fashion', this)"><i class="fas fa-tshirt"></i> Fashion</button>
-    <button role="tab" onclick="loadDisqus('group-hiphop', this)"><i class="fas fa-microphone-alt"></i> Hiphop</button>
-    <button role="tab" onclick="loadDisqus('group-celebrity', this)"><i class="fas fa-star"></i> Celebrity</button>
-    <button role="tab" onclick="loadDisqus('group-billboard', this)"><i class="fas fa-music"></i> Billboard</button>
-    <button role="tab" onclick="loadDisqus('group-news', this)"><i class="fas fa-newspaper"></i> News</button>
-    <button role="tab" onclick="loadDisqus('group-technology', this)"><i class="fas fa-laptop-code"></i> Technology</button>
-    <button role="tab" onclick="loadDisqus('group-ai', this)"><i class="fas fa-robot"></i> AI</button>
-    <button role="tab" onclick="loadDisqus('group-jobs', this)"><i class="fas fa-briefcase"></i> Jobs</button>
-    <button role="tab" onclick="loadDisqus('group-sports', this)"><i class="fas fa-football-ball"></i> Sports</button>
-    <button role="tab" onclick="loadDisqus('group-tech', this)"><i class="fas fa-tools"></i> Dev</button>
-    <button role="tab" onclick="loadDisqus('group-memes', this)"><i class="fas fa-face-laugh"></i> Memes</button>
+    <button role="tab" onclick="window.location.hash='group-politics';loadDisqus('group-politics', this)"><i class="fas fa-landmark"></i> Politics</button>
+    <button role="tab" onclick="window.location.hash='group-fashion';loadDisqus('group-fashion', this)"><i class="fas fa-tshirt"></i> Fashion</button>
+    <button role="tab" onclick="window.location.hash='group-hiphop';loadDisqus('group-hiphop', this)"><i class="fas fa-microphone-alt"></i> Hiphop</button>
+    <button role="tab" onclick="window.location.hash='group-celebrity';loadDisqus('group-celebrity', this)"><i class="fas fa-star"></i> Celebrity</button>
+    <button role="tab" onclick="window.location.hash='group-billboard';loadDisqus('group-billboard', this)"><i class="fas fa-music"></i> Billboard</button>
+    <button role="tab" onclick="window.location.hash='group-news';loadDisqus('group-news', this)"><i class="fas fa-newspaper"></i> News</button>
+    <button role="tab" onclick="window.location.hash='group-technology';loadDisqus('group-technology', this)"><i class="fas fa-laptop-code"></i> Technology</button>
+    <button role="tab" onclick="window.location.hash='group-ai';loadDisqus('group-ai', this)"><i class="fas fa-robot"></i> AI</button>
+    <button role="tab" onclick="window.location.hash='group-jobs';loadDisqus('group-jobs', this)"><i class="fas fa-briefcase"></i> Jobs</button>
+    <button role="tab" onclick="window.location.hash='group-sports';loadDisqus('group-sports', this)"><i class="fas fa-football-ball"></i> Sports</button>
+    <button role="tab" onclick="window.location.hash='group-tech';loadDisqus('group-tech', this)"><i class="fas fa-tools"></i> Dev</button>
+    <button role="tab" onclick="window.location.hash='group-memes';loadDisqus('group-memes', this)"><i class="fas fa-face-laugh"></i> Memes</button>
   </div>
 </div>
 
@@ -285,7 +285,7 @@
     button.classList.add('active');
 
     const disqus_config = function () {
-      this.page.url = `https://dreez-cell.github.io/Social-/${groupId}`;
+      this.page.url = `https://dreez-cell.github.io/Social-/#${groupId}`;
       this.page.identifier = groupId;
     };
 
@@ -376,6 +376,16 @@
 
   window.onload = () => {
     loadRSSFeeds();
+    // On load: if there is a hash, activate corresponding tab and load Disqus
+    if (window.location.hash) {
+      const groupId = window.location.hash.substring(1);
+      // Find button with matching onclick handler
+      const btn = Array.from(document.querySelectorAll('.group-tabs button'))
+        .find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(groupId));
+      if (btn) {
+        loadDisqus(groupId, btn);
+      }
+    }
   };
 </script>
 
